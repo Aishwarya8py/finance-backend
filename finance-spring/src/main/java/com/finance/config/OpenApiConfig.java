@@ -11,19 +11,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
+    @Value("${app.server-url:http://localhost:8080}")
+    private String serverUrl;
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Finance Backend API")
-                        .version("1.0.0")
-                        .description("Finance dashboard backend with role-based access control"))
-                .addSecurityItem(new SecurityRequirement().addList("Bearer Auth"))
-                .components(new Components()
-                        .addSecuritySchemes("Bearer Auth", new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .description("Paste your JWT token here")));
+            .servers(List.of(new Server().url(serverUrl)))
+            .info(new Info()
+                .title("Finance Backend API")
+                .version("1.0.0")
+                .description("Finance dashboard backend with role-based access control"))
+            .addSecurityItem(new SecurityRequirement().addList("Bearer Auth"))
+            .components(new Components()
+                .addSecuritySchemes("Bearer Auth", new SecurityScheme()
+                    .type(SecurityScheme.Type.HTTP)
+                    .scheme("bearer")
+                    .bearerFormat("JWT")));
     }
 }
