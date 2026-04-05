@@ -15,10 +15,12 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
+
     @Value("${app.server-url:http://localhost:8080}")
     private String serverUrl;
 
     @Bean
+
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .servers(List.of(
