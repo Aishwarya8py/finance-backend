@@ -6,7 +6,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,29 +14,27 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-
-    @Value("${app.server-url:http://localhost:8080}")
-    private String serverUrl;
-
     @Bean
-
     public OpenAPI customOpenAPI() {
+        Server railwayServer = new Server();
+        railwayServer.setUrl("https://finance-backend-production-4aa1.up.railway.app");
+        railwayServer.setDescription("Production server");
+
+        Server localServer = new Server();
+        localServer.setUrl("http://localhost:8080");
+        localServer.setDescription("Local development");
+
         return new OpenAPI()
-                .servers(List.of(
-                        new Server().url(serverUrl).description("Active server")
-                ))
+                .servers(List.of(railwayServer, localServer))
                 .info(new Info()
                         .title("Finance Backend API")
                         .version("1.0.0")
-                        .description("Finance dashboard backend with role-based access control. " +
-                                "Login with POST /auth/login to get a token, " +
-                                "then click Authorize and paste the token."))
+                        .description("Finance dashboard backend with role-based access control"))
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Auth"))
                 .components(new Components()
                         .addSecuritySchemes("Bearer Auth", new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .description("Paste your JWT token here (without the word Bearer)")));
+                                .bearerFormat("JWT")));
     }
 }

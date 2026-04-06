@@ -20,16 +20,16 @@ public class CorsConfig {
 
         // Allow all standard headers
         config.setAllowedHeaders(List.of(
-            "Authorization",
-            "Content-Type",
-            "Accept",
-            "Origin",
-            "X-Requested-With"
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "Origin",
+                "X-Requested-With"
         ));
 
         // Allow all HTTP methods
         config.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
+                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
         ));
 
         config.setAllowCredentials(false);
